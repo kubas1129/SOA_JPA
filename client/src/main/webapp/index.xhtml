@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+   <title>Books DB</title>
+</h:head>
+
+<h:body>
+
+    <h:panelGrid columns="2">
+
+        <h:form id="form">
+            <h:outputLabel value="Książki"/>
+
+            <h:commandButton value="Dodaj książkę" action="/addBook.xhtml?faces-redirect=true"/>
+
+            <h:dataTable id="booksTable" value="#{BookBean.booksManager.GetAllBooks()}" var="bk" border="1" cellpadding="6px">
+                <h:column>
+                    <f:facet name="header">ISBN</f:facet>
+                    #{bk.ISBN}
+                </h:column>
+
+                <h:column>
+                    <f:facet name="header">Author first name</f:facet>
+                    #{bk.author.firstName}
+                </h:column>
+
+                <h:column>
+                    <f:facet name="header">Author last name</f:facet>
+                    #{bk.author.lastName}
+                </h:column>
+
+                <h:column>
+                    <f:facet name="header">Title</f:facet>
+                    #{bk.title}
+                </h:column>
+
+                <h:column>
+                    <f:facet name="header">Year</f:facet>
+                    #{bk.year}
+                </h:column>
+
+                <h:column>
+                    <f:facet name="header">Akcje</f:facet>
+                    <h:commandButton value="Modyfikuj" action="#{BookBean.GoToModify(bk)}"/>
+                    <h:commandButton value="Usuń" >
+                        <f:ajax event="click" listener="#{BookBean.booksManager.DeleteBook(bk)}" execute="@this" render="@form"/>
+                    </h:commandButton>
+                    <h:commandButton value="Wypożycz" action="#{LibraryBean.BorrowBook(bk)}" disabled="#{!LibraryBean.logged}"/>
+                </h:column>
+            </h:dataTable>
+        </h:form>
+
+
+
+
+        <h:form id="form2" style="margin-left: 100px;">
+
+            <h:outputLabel value="Panel użytkownika, witaj: #{LibraryBean.logged eq true ? LibraryBean.firstName:'Wymagane logowanie!'}"/>
+
+            <h:panelGrid columns="2">
+                <h:outputLabel value="Imie"/>
+                <h:inputText value="#{LibraryBean.firstName}"/>
+
+                <h:outputLabel value="Nazwisko"/>
+                <h:inputText value="#{LibraryBean.lastName}"/>
+            </h:panelGrid>
+
+            <h:panelGrid columns="3">
+                <h:commandButton value="Zaloguj" action="#{LibraryBean.LogIn()}"/>
+                <h:commandButton value="Wyloguj" action="#{LibraryBean.LogOut()}"/>
+                <h:commandButton value="Zarejestruj" action="#{LibraryBean.Register()}"/>
+            </h:panelGrid>
+
+            <h:outputLabel value="Twoje wypożyczenia:"/>
+        </h:form>
+
+
+
+
+        <h:form id="form3">
+            <h:outputText value="Wyszukiwanie zaawansowane:"/>
+            <h:selectOneRadio value="#{LibraryBean.selectedFilterOption}">
+                <f:selectItem itemValue="authors" itemLabel="Szukaj autorów"/>
+                <f:selectItem itemValue="readers" itemLabel="Szukaj czytelników"/>
+                <f:selectItem itemValue="books" itemLabel="Szukaj książek"/>
+            </h:selectOneRadio>
+
+            <h:panelGrid columns="2">
+                <h:outputLabel value="Imię czytelnika:"/>
+                <h:inputText value="#{LibraryBean.filterReaderFirstName}">
+                    <f:ajax event="change" listener="#{LibraryBean.Filter()}" execute="@this" render="@form3"/>
+                </h:inputText>
+
+                <h:outputLabel value="Nazwisko czytelnika:"/>
+                <h:inputText value="#{LibraryBean.filterReaderLastName}">
+                    <f:ajax event="change" listener="#{LibraryBean.Filter()}" execute="@this" render="@form3"/>
+                </h:inputText>
+
+                <h:outputLabel value="Imię autora:"/>
+                <h:inputText value="#{LibraryBean.filterAuthorFirstName}">
+                    <f:ajax event="change" listener="#{LibraryBean.Filter()}" execute="@this" render="@form3"/>
+                </h:inputText>
+
+                <h:outputLabel value="Nazwisko autora:"/>
+                <h:inputText value="#{LibraryBean.filterReaderLastName}">
+                    <f:ajax event="change" listener="#{LibraryBean.Filter()}" execute="@this" render="@form3"/>
+                </h:inputText>
+
+                <h:outputLabel value="Tytuł książki:"/>
+                <h:inputText value="#{LibraryBean.filterTitle}">
+                    <f:ajax event="change" listener="#{LibraryBean.Filter()}" execute="@this" render="@form3"/>
+                </h:inputText>
+
+                <h:outputLabel value="Data wypożyczenia:"/>
+                <p:calendar id="dateStart" value="#{LibraryBean.filterDateStart}" mode="popup" >
+                    <f:ajax event="change" listener="#{LibraryBean.Filter()}" execute="@this" render="@form3"/>
+                </p:calendar>
+
+                <h:outputLabel value="Data oddania:"/>
+                <p:calendar id="dateEnd" value="#{LibraryBean.filterDateEnd}" mode="popup" >
+                    <f:ajax event="change" listener="#{LibraryBean.Filter()}" execute="@this" render="@form3"/>
+                </p:calendar>
+
+            </h:panelGrid>
+
+            <h:dataTable id="authorsSearch" value="#{LibraryBean.FilteredData()}" var="tr" border="1" cellpadding="6px">
+                <h:column>
+                    <f:facet name="header">Tytuł</f:facet>
+                    #{tr.book.title}
+                </h:column>
+
+                <h:column>
+                    <f:facet name="header">Data wypożyczenia</f:facet>
+                    #{tr.borrowDate}
+                </h:column>
+
+                <h:column>
+                    <f:facet name="header">Data oddania</f:facet>
+                    #{tr.returnDate}
+                </h:column>
+            </h:dataTable>
+
+
+        </h:form>
+
+
+
+
+        <h:form id="form4" style="margin-left: 100px;">
+            <h:outputLabel value="Pożyczone książki"/>
+
+            <h:dataTable id="borrowedTable" value="#{LibraryBean.libraryManager.getTransactionForReader(LibraryBean.firstName,LibraryBean.lastName)}" var="tr" border="1" cellpadding="6px">
+                <h:column>
+                    <f:facet name="header">Tytuł</f:facet>
+                    #{tr.book.title}
+                </h:column>
+
+                <h:column>
+                    <f:facet name="header">Data wypożyczenia</f:facet>
+                    #{tr.borrowDate}
+                </h:column>
+
+                <h:column>
+                    <f:facet name="header">Data oddania</f:facet>
+                    #{tr.returnDate}
+                </h:column>
+
+                <h:column>
+                    <f:facet name="header">Akcje</f:facet>
+                    <h:commandButton value="Oddaj">
+                        <f:ajax event="click" listener="#{LibraryBean.ReturnBook(tr)}" execute="@this" render="@form4"/>
+                    </h:commandButton>
+                </h:column>
+            </h:dataTable>
+        </h:form>
+
+
+
+
+    </h:panelGrid>
+
+
+</h:body>
+</html>

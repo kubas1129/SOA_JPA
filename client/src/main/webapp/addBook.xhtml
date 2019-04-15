@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+        PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+<head>
+    <title>Adding book</title>
+</head>
+<h:body>
+
+
+    <h:form id="form">
+        <h:outputLabel value="Dodaj książkę"/>
+
+        <h:panelGrid columns="2">
+
+            <h:outputLabel value="ISBN: "/>
+            <h:inputText id="isbnInput" value="#{BookBean.modifyISBN}"  />
+
+            <h:outputLabel value="Tytuł: "/>
+            <h:inputText id="titleInput" value="#{BookBean.modifyTitle}" />
+
+            <h:outputLabel value="Rok: "/>
+            <h:inputText id="yearInput" value="#{BookBean.modifyYear}" />
+
+            <h:outputLabel value="Imie autora: "/>
+            <h:inputText id="authorNameInput" value="#{BookBean.firstName}" />
+
+            <h:outputLabel value="Nazwisko autora: "/>
+            <h:inputText id="authorLastInput" value="#{BookBean.lastName}" />
+
+            <h:commandButton value="Dodaj" action="#{BookBean.AddBook()}" />
+            <h:commandButton value="Wróć" action="/index.xhtml?faces-redirect=true"/>
+
+
+        </h:panelGrid>
+
+    </h:form>
+
+</h:body>
+</html>

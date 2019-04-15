@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+        PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+<head>
+    <title>Modyfikacja książki</title>
+</head>
+<h:body>
+
+    <h:form id="form">
+        <h:outputLabel value="Modyfikuj książkę"/>
+
+        <h:panelGrid columns="2">
+
+            <h:outputLabel value="ISBN: "/>
+            <h:inputText id="isbnInput" value="#{BookBean.selectedBook.ISBN}"  />
+
+            <h:outputLabel value="Tytuł: "/>
+            <h:inputText id="titleInput" value="#{BookBean.selectedBook.title}" />
+
+            <h:outputLabel value="Rok: "/>
+            <h:inputText id="yearInput" value="#{BookBean.selectedBook.year}" />
+
+            <h:outputLabel value="Imie autora: "/>
+            <h:inputText id="authorNameInput" value="#{BookBean.selectedBook.author.firstName}" />
+
+            <h:outputLabel value="Nazwisko autora: "/>
+            <h:inputText id="authorLastInput" value="#{BookBean.selectedBook.author.lastName}" />
+
+            <h:commandButton value="Modyfikuj" action="#{BookBean.ModifyBook()}" />
+            <h:commandButton value="Wróć" action="/index.xhtml?faces-redirect=true"/>
+
+        </h:panelGrid>
+
+    </h:form>
+
+
+</h:body>
+</html>

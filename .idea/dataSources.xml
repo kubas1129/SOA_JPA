@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
+    <data-source source="LOCAL" name="BooksJPA/Hibernate" uuid="8d4fcfbd-922f-4571-b493-087d4fe466c7">
+      <driver-ref>postgresql</driver-ref>
+      <synchronize>true</synchronize>
+      <imported>true</imported>
+      <remarks>Hibernate
+
+E:/AGH/SemestrVI/OneDrive/SOA/Labki/lab5/BooksJPA/impl/src/main/resources/META-INF/persistence.xml</remarks>
+      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
+      <jdbc-url>jdbc:postgresql://localhost/PostgresDS</jdbc-url>
+    </data-source>
+  </component>
+</project>
